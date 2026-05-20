@@ -102,7 +102,7 @@ function multiplicacionNaturales(uint256[] memory multiplicandos_) public return
 
 function multiplicacionEnteros(int256[] memory multiplicandos_) public returns (int256 resultado_)
 {
-  resultado_ = 0;
+  resultado_ = 1; //Neutro
   for(uint256 i = 0; i < multiplicandos_.length; i++)
   {
     resultado_ = multiplicacionEnteraInterna(resultado_, multiplicandos_[i]);
