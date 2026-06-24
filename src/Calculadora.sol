@@ -4,10 +4,12 @@ pragma solidity ^0.8.24;
 
 contract Calculadora {
     //Variables
+    address admin;
 
     //Errores
     error DivisionByZero();
     error RestaNoNatural();
+    error NoEsAdmin();
 
     //Eventos
     event SumaNatural(uint256 numero1_, uint256 numero2_, uint256 resultado);
@@ -28,6 +30,16 @@ contract Calculadora {
 
     event RestoNatural(uint256 dividendo_, uint256 divisor_, uint256 resto_);
     event RestoEntero(int256 dividendo_, int256 divisor_, int256 resto_);
+
+    //Modificadores 
+    modifier soloAdmin() {
+        if(admin != msg.sender) revert NoEsAdmin();
+        _;    
+    }
+
+    constructor(address admin_) {
+        admin = admin_;
+    }
 
     //Funciones
     //Externas
@@ -116,7 +128,7 @@ contract Calculadora {
         emit RestoNatural(numero1_, numero2_, resultado_);
     }
 
-    function restoEntero(int256 numero1_, int256 numero2_) public returns (int256 resultado_) {
+    function restoEntero(int256 numero1_, int256 numero2_) public soloAdmin() returns (int256 resultado_) {
         if (numero2_ == 0) revert DivisionByZero();
 
         resultado_ = numero1_ % numero2_;
